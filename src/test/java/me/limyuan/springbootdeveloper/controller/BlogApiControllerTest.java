@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.lang.runtime.ObjectMethods;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -99,5 +98,27 @@ class BlogApiControllerTest {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value(title))
                 .andExpect(jsonPath("$[0].content").value(content));
+    }
+
+    @DisplayName("findArticle: 블로그 글 조회")
+    @Test
+    public void findArticle() throws Exception {
+        // given: 블로그 글 저장
+        final String url = "/api/articles/{id}";
+        final String title = "title";
+        final String content = "content";
+
+        Article savedArticle = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        // when: 글 조회 API 호출
+        final ResultActions result = mockMvc.perform((get(url, savedArticle.getId())));
+
+        // then: 응답 코드 200 결과 값 비교
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(title))
+                .andExpect(jsonPath("$.content").value(content));
     }
 }
