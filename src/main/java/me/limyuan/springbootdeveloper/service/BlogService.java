@@ -3,8 +3,10 @@ package me.limyuan.springbootdeveloper.service;
 import lombok.RequiredArgsConstructor;
 import me.limyuan.springbootdeveloper.domain.Article;
 import me.limyuan.springbootdeveloper.dto.AddArticleRequest;
+import me.limyuan.springbootdeveloper.dto.UpdateArticleRequest;
 import me.limyuan.springbootdeveloper.repository.BlogRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,5 +26,17 @@ public class BlogService {
     public Article findById(Long id) {
         return blogRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    }
+
+    public void deleteById(Long id) {
+         blogRepository.deleteById(id);
+    }
+    @Transactional // 트랜잭션 메서드: 매칭한 메서드를 하나의 트랜잭션으로 묶는 역할
+    public Article update(Long id, UpdateArticleRequest updateArticleRequest) {
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+        article.update(updateArticleRequest.getTitle(), updateArticleRequest.getContent());
+
+        return article;
     }
 }

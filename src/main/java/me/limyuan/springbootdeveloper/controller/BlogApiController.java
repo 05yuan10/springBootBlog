@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.limyuan.springbootdeveloper.domain.Article;
 import me.limyuan.springbootdeveloper.dto.AddArticleRequest;
 import me.limyuan.springbootdeveloper.dto.ArticleResponse;
+import me.limyuan.springbootdeveloper.dto.UpdateArticleRequest;
 import me.limyuan.springbootdeveloper.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,21 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
+    }
+
+    @DeleteMapping("/api/articles/{id}")
+    public ResponseEntity<Void> deleteArticles(@PathVariable Long id) {
+        blogService.deleteById(id);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody UpdateArticleRequest request) {
+        Article updateArticle =  blogService.update(id, request);
+
+        return ResponseEntity.ok()
+                .body(updateArticle);
     }
 }
