@@ -45,7 +45,7 @@ if (modifyButton) {
 // id가 create-btn인 엘리먼트 조회
 const createButton = document.getElementById('create-btn');
 if(createButton) {
-    // 클릭 이벤트가 감지되면 삭제 등록 API 요청
+    // 클릭 이벤트가 감지되면 등록 API 요청
     createButton.addEventListener('click', event => {
         fetch(`/api/articles`, {
             method: 'POST',
