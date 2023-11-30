@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/login", "/signup", "/user").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin() //4. 폼 기반 로그인 설정
+                .formLogin() // 4. 폼 기반 로그인 설정
                 .loginPage("/login")
                 .defaultSuccessUrl("/articles")
                 .and()

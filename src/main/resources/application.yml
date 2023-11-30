@@ -11,7 +11,12 @@ spring:
 
   datasource:
     url: jdbc:h2:mem:testdb
+    username: sa
 
   h2:
     console:
       enabled: true
+
+jwt:
+  issuer: puppy426511@gmail.com
+  secret_key: study-springboot
