@@ -27,4 +27,10 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("Unexpected user"));
     }
+
+    // 이메일을 입력받아 users 테이블에서 유저를 찾고, 없으면 예외
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
 }

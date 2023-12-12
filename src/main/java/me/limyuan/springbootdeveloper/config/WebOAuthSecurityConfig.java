@@ -2,6 +2,8 @@ package me.limyuan.springbootdeveloper.config;
 
 import lombok.RequiredArgsConstructor;
 import me.limyuan.springbootdeveloper.config.jwt.TokenProvider;
+import me.limyuan.springbootdeveloper.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import me.limyuan.springbootdeveloper.config.oauth.OAuth2SuccessHandler;
 import me.limyuan.springbootdeveloper.config.oauth.OAuth2UserCustomService;
 import me.limyuan.springbootdeveloper.repository.RefreshTokenRepository;
 import me.limyuan.springbootdeveloper.service.UserService;
@@ -31,7 +33,7 @@ public class WebOAuthSecurityConfig {
     public WebSecurityCustomizer configure() { // 스프링 시큐리티 기능 비활성화
         return (web) -> web.ignoring()
                 .requestMatchers(toH2Console())
-                .requestMatchers("/img/**", "/css/**", "/js/**");
+                .requestMatchers("/static/img/**", "/css/**", "/js/**");
     }
 
     @Bean
@@ -45,7 +47,7 @@ public class WebOAuthSecurityConfig {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // 헤더를 확인할 커스텀 필터 추가
+        // 헤더 값을 확인할 커스텀 필터 추가
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // 토큰 재발급 URL은 인증 없이 접근 가능하도록 설정. 나머지 API URL은 인증 필요
@@ -58,7 +60,7 @@ public class WebOAuthSecurityConfig {
                 .loginPage("/login")
                 .authorizationEndpoint()
                 // Authorization 요청과 관련된 상태 저장
-                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCoolieRepository())
+                .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 .successHandler(oAuth2SuccessHandler())
                 .userInfoEndpoint()

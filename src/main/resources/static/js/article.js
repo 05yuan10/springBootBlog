@@ -47,19 +47,52 @@ const createButton = document.getElementById('create-btn');
 if(createButton) {
     // 클릭 이벤트가 감지되면 등록 API 요청
     createButton.addEventListener('click', event => {
-        fetch(`/api/articles`, {
-            method: 'POST',
+        body = JSON.stringify({
+            title: document.getElementById("title").value,
+            content: document.getElementById("content").value,
+        });
+
+        function success() {
+            alert("등록 완료되었습니다.");
+            location.replace("/articles");
+        }
+
+        function fail() {
+            alert("등록 실패했습니다.");
+            location.replace("articles");
+        }
+
+        httpRequest("POST", "/api/articles", body, success, fail);
+    });
+
+    // 쿠키를 가져오는 함수
+    function getCookie(key) {
+        var result = null;
+        var cookie = document.cookie.split(";");
+        cookie.some(function (itmem) {
+            item = item.replace(" ", "");
+
+            var dic = item.split("=");
+            if (key === dic[0]) {
+                result = dic[1];
+                return true;
+            }
+        });
+        return result;
+    }
+}
+/*
+    // HTTP 요청을 보내는 함수
+    function httpRequest(method, url, body, success, fail) {
+        fetch(`url, {
+            method: method,
             headers: {
+                // 로컬 스토리지에서 액세스 토큰 값을 가져와 헤더에 추가
+                Authorization: "Bearer " + localStorage.getItem("access_token"),
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                title: document.getElementById('title').value,
-                content: document.getElementById('content').value
-            }),
+            body: body,
         })
-            .then(() => {
-                alert('등록이 완료되었습니다.');
-                location.replace(`/articles`);
-            });
-    });
-}
+            .then((response) => {
+
+            }*/
